@@ -70,25 +70,46 @@ var products = [
 // ** Don't hesitate to seek help from your peers or your mentor if you still struggle with debugging.
 
 // Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
-var cart = [];
+var cart = []; // Objeto para almacenar el carrito de compra
+var cartList = [];
 
-var total = 0;
+var total = 0; //variable que obtine el total la compra
 
 // Exercise 1
-function buy(id) {
+function buy(id) { //Función para agregar un producto al carrito
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cart array
+    cartList = cart.find(item => item.id === id);
+
+    if (cartList) {
+        cartList.quantity += 1;
+    } else {
+        products.push({id: id, quantity: 1});
+    }
+    console.log("producto añadido al carrito", id);
 }
 
 // Exercise 2
-function cleanCart() {
-
+function cleanCart() { // Funcion para reiniciar el carrito a 0
+    cart = [];
+    total = 0;
+    console.log("Carrito reseteado a 0 items");
 }
 
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
+    var totalPrice = 0;
+
+    products.forEach(item => {
+        console.log("quantity:", item.quantity, "price:", item.price); // Agrega este log para depurar
+        totalPrice += item.quantity * item.price;
+    });
+    return totalPrice;
 }
+var totalPrice = calculateTotal();
+console.log("Total de la compra:", totalPrice);
+
 
 // Exercise 4
 function applyPromotionsCart() {
@@ -98,6 +119,7 @@ function applyPromotionsCart() {
 // Exercise 5
 function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
+
 }
 
 
