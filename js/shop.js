@@ -129,7 +129,7 @@ function applyPromotionsCart() {
         const product = products.find(product => product.id === item.id);
 
         //Verificar si el producto tiene una oferta/promoción
-        if (product.offer) {
+        if (product.offer && item.quantity >= product.offer.number) {
             //calcular el descuento basado en la oferta
             const discount = (item.quantity / product.offer.number) * product.offer.percent;
 
@@ -138,11 +138,15 @@ function applyPromotionsCart() {
 
             //actualizar el precio en el carrito con el descuento aplicado
             item.price = discountedPrice;
+
+            //Verificar si se a aplicado la oferta
+            console.log(`descuento del producto ${product.offer.percent}% aplicado a ${item.quantity} productos del ID ${product.id}`);
         }
     });
     //Imprimir el carrito con las promociones aplicadas 
-    console.log("Carrito con promociones aplicadas: ", cart);
+    //Actualizar el total despues de aplicar promociones
     calculateTotal();
+    //Imprimir el carrito con las promociones aplicadas
     printCart();
 }
 //Llamada a la funcion para aplicar las promociones
@@ -174,14 +178,7 @@ function printCart() {
         // Agregar el elemento al contenido del carrito
         cartListElement.appendChild(cartItemElement);
     });
-    
-    // Agregar una fila adicional para mostrar el total
-    const totalRowElement = document.createElement('tr');
-    totalRowElement.innerHTML = `
-        <th scope="row" colspan="3">Total:</th>
-        <td>$${total.toFixed(2)}</td>
-    `;
-    cartListElement.appendChild(totalRowElement);   
+  
 }
 printCart();
 
