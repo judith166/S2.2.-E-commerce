@@ -168,12 +168,13 @@ function printCart() {
 
         //Crear un elemento para mostrar la información del producto en el carrito de la compra
         const cartItemElement = document.createElement('tr');
-        cartItemElement.innerHTML = `
+        cartItemElement.innerHTML = 
+        `
         <th scope="row">${product.name}</th>
         <td>$${product.price.toFixed(2)}</td>
         <td>${item.quantity}</td>
         <td>$${(item.quantity * product.price).toFixed(2)}</td>
-    `;
+        `;
 
         // Agregar el elemento al contenido del carrito
         cartListElement.appendChild(cartItemElement);
@@ -186,7 +187,7 @@ printCart();
 
 // Exercise 7
 function removeFromCart(id) {
-
+    
 }
 
 function open_modal() {

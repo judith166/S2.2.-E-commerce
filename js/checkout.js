@@ -21,7 +21,7 @@ function validate() {
 	var regexLETTER = /^[a-zA-Z]+$/;
 	var regexMIX = /^[a-zA-Z0-9]+$/;
 	let regexpEMAIL = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-	let regexpNUM = /^09[0-9]{7}$/;
+	let regexpNUM = /^[0-9]{9}$/;
 	
 	// Validate fields entered by the user: name, phone, password, and email
 	
@@ -61,6 +61,7 @@ function validate() {
 		errorLastN.textContent = "This field is required and must have at least 3 characters";	
 	} else {
 		fLastN.classList.remove('is-invalid');
+		errorLastN.textContent = "";
 	}
 	 
 	//Validación campo password
@@ -70,6 +71,7 @@ function validate() {
 		errorPassword.textContent = "Enter a correct password";
 	} else {
 		fPassword.classList.remove('is-invalid');
+		errorPassword.textContent = "";
 	}
 
 	//Validación campo telf
@@ -79,6 +81,7 @@ function validate() {
 		errorPhone.textContent = "Invalid phone number!! Must be 9 digits with no letters";
 	} else {
 		fPhone.classList.remove('is-invalid');
+		errorPhone.textContent = "";
 	}
 
 	if(error > 0){
