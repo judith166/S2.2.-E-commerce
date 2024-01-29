@@ -167,9 +167,9 @@ function printCart() {
         cartItemElement.innerHTML = 
         `
         <th scope="row">${product.name}</th>
-        <td>$${product.price.toFixed(2)}</td>
+        <td>${product.price.toFixed(2)}</td>
         <td>${item.quantity}</td>
-        <td>$${(item.quantity * item.price).toFixed(2)}</td>
+        <td>${(item.quantity * item.price).toFixed(2)}</td>
         `;
 
         // Agregar el elemento al contenido del carrito
@@ -177,8 +177,13 @@ function printCart() {
     });
     const totalElement = document.getElementById('total_price');
     totalElement.textContent = total.toFixed(2); // Actualizar el total en el DOM
+    
+    
 }
+// Coloca este código al final de tu script
+applyPromotionsCart();
 printCart();
+console.log("Funciones llamadas explícitamente al final del script.");
 
 
 // ** Nivell II **
