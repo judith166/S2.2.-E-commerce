@@ -78,21 +78,24 @@ var total = 0; //variable que obtine el total la compra
 function buy(id) { //Función para agregar un producto al carrito
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cart array
-    const productToAdd = products.find(product => product.id === id);
+    // Loop through the array products to get the item to add to cart
+    for (let i = 0; i < products.length; i++) {
+        const product = products[i];
 
-    const cartItem = cart.find(item => item.id === id);
+        if (product.id === id) {
+            const cartItem = cart.find(item => item.id === id);
 
-    if (cartItem) {
-        cartItem.quantity += 1;
-    } else {
-        cart.push({ ...productToAdd, quantity: 1 });
+            if (cartItem) {
+                cartItem.quantity += 1;
+            } else {
+                cart.push(Object.assign({}, product, { quantity: 1 }));
+            }
+
+            console.log("Producto añadido al carrito", id);
+            break;
+        }
     }
-    console.log("Producto añadido al carrito", id);
 }
-// Calcular el total después de agregar el producto al carrito
-calculateTotal();
-printCart();
-console.log("Producto añadido al carrito", id);
 
 
 // Exercise 2
@@ -101,7 +104,6 @@ function cleanCart() { // Funcion para reiniciar el carrito a 0
     calculateTotal(); //Calcular el total después de limpiar el carrito
     printCart(); //Imprimir el carrito en el DOM
     console.log("Carrito reseteado a 0 items");
-    
 }
 
 // Exercise 3
@@ -109,11 +111,16 @@ function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
     var totalPrice = 0;
 
-    cart.forEach(item => {
+    for (let i = 0; i < cart.length; i++) {
+        const item = cart[i];
         const product = products.find(product => product.id === item.id);
-        console.log("quantity:", item.quantity, "price:", item.price); // Agrega este log para depurar
-        totalPrice += item.quantity * item.price;
-    });
+        
+        const discountedPrice = (product.offer && item.quantity >= product.offer.number) ?
+            (item.quantity * product.price * (100 - product.offer.percent) / 100) :
+            (item.quantity * product.price);
+
+        totalPrice += discountedPrice;
+    }
     // Actualizar la variable 'total'
     total = totalPrice;
     
@@ -128,30 +135,19 @@ function applyPromotionsCart() {
     cart.forEach(item => {
         const product = products.find(product => product.id === item.id);
 
-        //Verificar si el producto tiene una oferta/promoción
         if (product.offer && item.quantity >= product.offer.number) {
-            //calcular el descuento basado en la oferta
             const discount = (item.quantity / product.offer.number) * product.offer.percent;
-
-            //aplicar descuento al precio del producto en el carrito
             const discountedPrice = product.price - (product.price * discount / 100);
-
-            //actualizar el precio en el carrito con el descuento aplicado
             item.price = discountedPrice;
 
-            //Verificar si se a aplicado la oferta
-            console.log(`descuento del producto ${product.offer.percent}% aplicado a ${item.quantity} productos del ID ${product.id}`);
+            console.log(`Descuento del ${product.offer.percent}% aplicado a ${item.quantity} productos del ID ${product.id}`);
         }
     });
-    //Imprimir el carrito con las promociones aplicadas 
     //Actualizar el total despues de aplicar promociones
     calculateTotal();
     //Imprimir el carrito con las promociones aplicadas
     printCart();
 }
-//Llamada a la funcion para aplicar las promociones
-applyPromotionsCart();
-
 
 // Exercise 5
 function printCart() {
@@ -173,15 +169,17 @@ function printCart() {
         <th scope="row">${product.name}</th>
         <td>$${product.price.toFixed(2)}</td>
         <td>${item.quantity}</td>
-        <td>$${(item.quantity * product.price).toFixed(2)}</td>
+        <td>$${(item.quantity * item.price).toFixed(2)}</td>
         `;
 
         // Agregar el elemento al contenido del carrito
         cartListElement.appendChild(cartItemElement);
     });
-  
+    const totalElement = document.getElementById('total_price');
+    totalElement.textContent = total.toFixed(2); // Actualizar el total en el DOM
 }
 printCart();
+
 
 // ** Nivell II **
 
