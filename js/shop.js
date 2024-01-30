@@ -74,6 +74,12 @@ var cart = []; // Objeto para almacenar el carrito de compra
 
 var total = 0; //variable que obtine el total la compra
 
+var contador = 0;
+function updateCartCounter() {
+    const contadorElement = document.getElementById('count_product');
+    contadorElement.innerHTML = cart.length;
+}
+
 // Exercise 1
 function buy(id) { //Función para agregar un producto al carrito
     // 1. Loop for to the array products to get the item to add to cart
@@ -95,6 +101,7 @@ function buy(id) { //Función para agregar un producto al carrito
             break;
         }
     }
+    updateCartCounter();
 }
 
 
@@ -170,6 +177,7 @@ function printCart() {
         <td>${product.price.toFixed(2)}</td>
         <td>${item.quantity}</td>
         <td>${(item.quantity * item.price).toFixed(2)}</td>
+        <td><button type="button" onclick="removeFromCart(${item.id});" class="btn btn-danger"><i class="fas fa-trash"></i></button></td>
         `;
 
         // Agregar el elemento al contenido del carrito
@@ -190,7 +198,34 @@ console.log("Funciones llamadas explícitamente al final del script.");
 
 // Exercise 7
 function removeFromCart(id) {
-    
+   // Encuentra el índice del elemento en el carrito
+   const index = cart.findIndex(item => item.id === id);
+
+   if (index !== -1) {
+       // Resta 1 a la cantidad del producto
+       cart[index].quantity--;
+
+       // Si la cantidad llega a 0, elimina el producto del carrito
+       if (cart[index].quantity === 0) {
+           cart.splice(index, 1);
+       }
+
+       // Actualiza las promociones
+       applyPromotionsCart();
+
+       // Actualiza el contador del carrito
+       updateCartCounter();
+
+       // Calcula el nuevo total
+       calculateTotal();
+
+       // Imprime el carrito actualizado en el DOM
+       printCart();
+
+       console.log(`Producto con ID ${id} eliminado del carrito`);
+   } else {
+       console.log(`Producto con ID ${id} no encontrado en el carrito`);
+   } 
 }
 
 function open_modal() {
